@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project>
+
+  <property name="version"
+            value="0.1"/>
+
+  <property name="jar"
+            value="build/sthomas-bl-${version}.jar"/>
+
+  <property name="tst-dir" 
+            location="t" />
+
+
+  <path id="classpath">
+    <pathelement location="${jar}"/>
+  	<pathelement location="./lib/org.eclipse.jdt.core_3.5.2.v_981_R35x.jar"/>
+    <pathelement location="./lib/commons-collections-3.2.1.jar"/>
+	<pathelement location="./lib/commons-configuration-1.6.jar"/>
+	<pathelement location="./lib/commons-lang-2.5.jar"/>
+	<pathelement location="./lib/commons-logging-1.1.1.jar"/>
+	<pathelement location="./lib/lucene-analyzers-3.5.0.jar"/>
+	<pathelement location="./lib/lucene-analyzers-3.5.0-javadoc.jar"/>
+	<pathelement location="./lib/lucene-core-3.5.0.jar"/>
+	<pathelement location="./lib/lucene-core-3.5.0-javadoc.jar"/>
+	<pathelement location="./lib/org.eclipse.core.contenttype_3.4.1.R35x_v20090826-0451.jar"/>
+	<pathelement location="./lib/org.eclipse.core.jobs_3.4.100.v20090429-1800.jar"/>
+	<pathelement location="./lib/org.eclipse.core.resources_3.5.2.R35x_v20091203-1235.jar"/>
+	<pathelement location="./lib/org.eclipse.core.runtime_3.5.0.v20090525.jar"/>
+	<pathelement location="./lib/org.eclipse.equinox.common_3.5.1.R35x_v20090807-1100.jar"/>
+	<pathelement location="./lib/org.eclipse.equinox.preferences_3.2.301.R35x_v20091117.jar"/>
+	<pathelement location="./lib/org.eclipse.osgi_3.5.2.R35x_v20100126.jar"/>
+  	<pathelement location="./lib/commons-io-2.1.jar"/>
+  	<pathelement location="./lib/junit-4.10.jar"/>
+  </path>
+
+
+  <target name="clean">
+    <delete dir="build"/>
+  </target>
+
+  <target name="jar">
+    <mkdir dir="build/classes"/>
+    <javac classpathref="classpath"
+           debug="yes"
+           debuglevel="source,lines,vars"
+           destdir="build/classes"
+           includeantruntime="false">
+      <compilerarg value="-Xlint:all"/>
+      <src path="src/"/>
+    </javac>
+    <jar destfile="${jar}">
+      <fileset dir="build/classes"
+               includes="**/*.class"/>
+    </jar>
+  </target>
+
+  <path id="classpath.test">
+    <pathelement location="${tst-dir}" />
+    <path refid="classpath" />
+  </path>
+
+  <target name="compile-test" depends="jar">
+    <javac srcdir="${tst-dir}"
+           verbose="${TALK}">
+      <classpath refid="classpath.test"/>
+    </javac>
+  </target>
+
+  <target name="clean-compile-test">
+    <delete verbose="${TALK}">
+      <fileset dir="${tst-dir}" includes="**/*.class" />
+    </delete>
+  </target>
+
+  <target name="test" depends="compile-test">
+    <junit>
+      <classpath refid="classpath.test" />
+      <formatter type="brief" usefile="false" />
+      <test name="Test001" />
+    </junit>
+  </target>
+
+</project>
