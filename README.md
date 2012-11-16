@@ -31,18 +31,18 @@ executing the queries. (You can even input multiple LDA executions, for example
 if you have run LDA with different parameters. Here, you specify and query time
 which set of parameters you would like to use.) Specifically, you need to
 specify four files, for each parameter LDA parameter combination:
-  * vocab.dat: a Vx1 list of terms in the corpus
-  * words.dat: a KxV matrix (white-space delimited) that specifies the
+  * `vocab.dat`: a Vx1 list of terms in the corpus
+  * `words.dat`: a KxV matrix (white-space delimited) that specifies the
     membership of each word in each topic.
-  * files.dat: A Dx3 matrix (white-space) that lists the original file
+  * `files.dat:` A Dx3 matrix (white-space) that lists the original file
     names that LDA was executed on. The first and third columns are ignored; the
     second column should contain the file name.
-  * theta.dat" A DxK matrix (white-space) tat specifies the topic membership of
+  * `theta.dat`: A DxK matrix (white-space) tat specifies the topic membership of
     each file in each topic.
 
 In the above, V is the number of terms; K is the number of topics; and D is the
-number of documents. The order of the terms in vocab.dat should match the order
-in words.dat; the same is true for the files in files.dat and theta.dat.
+number of documents. The order of the terms in `vocab.dat` should match the order
+in `words.dat`; the same is true for the filenames in `files.dat` and `theta.dat`.
 
 * You have not yet run LDA on the input corpus, and you feed only the raw documents
 to lucene-lda. In this case, lucene-lda will first execute LDA on the documents
