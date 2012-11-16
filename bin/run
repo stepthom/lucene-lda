@@ -1,0 +1,6 @@
+java -cp "./lib/*:./build/*" ca.queensu.cs.sail.IndexSimple \
+../../../projects/localization/data/eclipse_all/raw test/out2
+
+java -cp "./lib/*:./build/*" ca.queensu.cs.sail.QueryAllInDirectory \
+test/out2 ../../../projects/localization/data/eclipse_all/bugs-raw-title
+
