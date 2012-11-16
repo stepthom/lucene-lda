@@ -1,7 +1,7 @@
 lucene-lda
 ==========
 
-Using latent Dirichlet allocation (LDA) in Apache Lucene
+Use latent Dirichlet allocation (LDA) in Apache Lucene
 
 AUTHOR
 ------
@@ -83,5 +83,6 @@ COPYRIGHT AND LICENCE
 ---------------------
 
 Copyright (C) 2012 by Stephen W. Thomas <sthomas@cs.queensu.ca>
+
 
 
