@@ -127,7 +127,8 @@ public class IndexDirectory {
 
 		// Read the fileCodes, if there is one
 		if (config.getString("fileCodes") != null) {
-			// TODO
+			// TODO: this functionality currently is placed in SimpleIndexer. Is that
+			// the best place for it? Maybe we should move it here?
 		}
 
 		// Now, for each LDA config on the command line. Since the command line

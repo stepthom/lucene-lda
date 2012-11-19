@@ -55,20 +55,22 @@ ranked list of documents that best match the given query.
 
 lucene-lda assumes that any complicated preprocessing of the documents or
 queries has already been performed. See
-[lscp][https://github.com/doofuslarge/lscp] for a nice preprocessor.
+[https://github.com/doofuslarge/lscp] for a nice preprocessor.
 
 
 DESIGN NOTES
 ------------
 
-A bit of background.
+The main design goal was to use LDA, not VSM, to compute the similarity between
+a query and a document. To understand how I achieved this, a bit of background 
+is required:
 
-By default, Lucene uses a slight variant of the vector space model (VSM) to
+By default, Lucene uses a slight variant of the Vector Space Model (VSM) to
 compute the similarity between a query and each document in the index. (There
 are some bells and whistles that are available, but this is the general idea.)
 The basic formulation of the similarity comes from the cosine distance between
 two vectors: one for the document, and one for the query. The numbers in the
-vector are the _term weights_ of each term in the document and query.
+vectors are the _term weights_ of each term in the document and query.
 
 LDA works very differently. In the LDA model, similarity is computed using
 _conditional probability_, which not only involves the terms of the query and
@@ -104,14 +106,11 @@ USAGE
 
 Use on the command line:
 
-    bin/indexDirectory [--help] <inDir> <outIndexDir> <outLDAIndex> [--fileCodes
-    <fileCodes>] [--ldaConfig ldaConfig1,ldaConfig2,...,ldaConfigN ]
+    bin/indexDirectory [--help] <inDir> <outIndexDir> <outLDAIndex> [--fileCodes <fileCodes>] [--ldaConfig ldaConfig1,ldaConfig2,...,ldaConfigN ]
 
-    bin/queryWithVSM [--help] <indexDir> <queryDir> <resultsDir>
-    [--weightingCode <weightingCode>] [--scoringCode <scoringCode>] 
+    bin/queryWithVSM [--help] <indexDir> <queryDir> <resultsDir> [--weightingCode <weightingCode>] [--scoringCode <scoringCode>] 
 
-    bin/queryWithLDA [--help] <indexDir> <LDAIndexDir> <queryDir> <resultsDir>
-    [--K <K>] [--scoringCode <scoringCode>]
+    bin/queryWithLDA [--help] <indexDir> <LDAIndexDir> <queryDir> <resultsDir> [--K <K>] [--scoringCode <scoringCode>]
 
 The above scripts simply call the corresponding Java classes, after setting the
 classpath as needed.

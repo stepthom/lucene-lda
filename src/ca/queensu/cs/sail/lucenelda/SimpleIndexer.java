@@ -37,7 +37,7 @@ public class SimpleIndexer {
 		File inDir         = new File(inDirName);
 		Directory indexDir = FSDirectory.open(new File(indexDirName));
 		
-		SourceCodeAnalyzer analyzer = new SourceCodeAnalyzer();
+		SimpleAnalyzer analyzer = new SimpleAnalyzer();
 		
 		IndexWriterConfig indexWriterConfig = new IndexWriterConfig(Version.LUCENE_35, analyzer);
 		IndexWriter writer = new IndexWriter(indexDir, indexWriterConfig);

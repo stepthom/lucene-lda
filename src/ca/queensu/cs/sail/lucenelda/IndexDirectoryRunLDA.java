@@ -6,7 +6,10 @@ Queen's University
 
 IndexDirectory.java
 
-Simple wrapper class for SimpleIndexer.
+Simple wrapper class for SimpleIndexer, when LDA has yet to be executed (and hence we
+need to execute it here.)
+
+TODO: This class is still under construction. 
 
 ####################################################################################
 */
@@ -43,6 +46,10 @@ public class IndexDirectoryRunLDA {
          .setRequired(true);
 		 opt2.setHelp("The output directory for the resultant Lucene index");
 		 
+		UnflaggedOption opt2a = new UnflaggedOption("outLDAIndex").setStringParser(
+					JSAP.STRING_PARSER).setRequired(true);
+		opt2a.setHelp("The output directory for the resultant LDA index");
+		 
 		 FlaggedOption opt3 = new FlaggedOption("fileCodes")
 		 .setStringParser(JSAP.STRING_PARSER)
          .setRequired(false)
@@ -65,6 +72,7 @@ public class IndexDirectoryRunLDA {
 		jsap.registerParameter(sw0);
 		jsap.registerParameter(opt1);
 		jsap.registerParameter(opt2);
+		jsap.registerParameter(opt2a);
 		jsap.registerParameter(opt3);
 		jsap.registerParameter(opt4);
 

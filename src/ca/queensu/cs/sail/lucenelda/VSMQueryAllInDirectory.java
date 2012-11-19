@@ -54,7 +54,7 @@ public class VSMQueryAllInDirectory {
 	private static IndexReader   reader     = null;
 	private static IndexSearcher searcher   = null;
 	private static QueryParser   parser     = null;
-	private static SourceCodeAnalyzer analyzer = null;
+	private static SimpleAnalyzer analyzer = null;
 
 	private static final Logger logger = Logger.getRootLogger();
 	
@@ -177,7 +177,7 @@ public class VSMQueryAllInDirectory {
 		logger.info("Reading the index");
 		reader   = IndexReader.open(dir, true);
 		searcher = new IndexSearcher(reader);
-		analyzer = new SourceCodeAnalyzer();
+		analyzer = new SimpleAnalyzer();
 
 		// We only need to search the "data" field, and we'll use a simple MultiFieldQuery
 		Version v = Version.LUCENE_35;
