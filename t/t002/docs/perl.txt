@@ -1,0 +1,9 @@
+perl is a high level general purpose interpreted dynamic programming
+language
+though perl is not officially an acronym there are various backronyms in
+use such as practical extraction and reporting language perl was
+originally developed by larry wall in 1987 as a general purpose unix scripting
+language to make report processing easier since then it has undergone
+many changes and revisions the latest major stable revision is 5.16 released
+in may 2012 perl 6 is a complete redesign of the language  announced in 2000
+and still under active development as of 2012

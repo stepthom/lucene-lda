@@ -1,0 +1,23 @@
+#!/bin/bash
+# Sets up the classpath and calls the appropriate class
+
+MEMORY=512m
+
+BASE=`dirname $0`
+#echo $BASE
+if [ "$BASE" = "." ]; then
+    echo "Error: don't call this script from within the bin/ directory."
+    exit
+fi
+BASE=`dirname $BASE`
+#echo $BASE
+
+cp="${BASE}/lib/*:${BASE}/build/*"
+#echo $cp
+
+JAVA_COMMAND="java -Xmx$MEMORY -cp $cp"
+
+CLASS="ca.queensu.cs.sail.lucenelda.VSMQueryAllInDirectory"
+
+$JAVA_COMMAND $CLASS $*
+

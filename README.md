@@ -17,7 +17,7 @@ framework.
 
 lucene-lda was originally developed as part of a research project that compared the
 performance of the Vector Space Model (VSM), which is Lucene's default IR model,
-with the performace of LDA. The context was bug localization, where the goal is
+with the performance of LDA. The context was bug localization, where the goal is
 to determine the similarity between bug reports and source code files. However,
 lucene-lda is general enough that other contexts can be considered: as long as
 there are (a) input documents to be searched and (b) queries to be executed. 
@@ -47,10 +47,56 @@ in `words.dat`; the same is true for the filenames in `files.dat` and `theta.dat
 * You have not yet run LDA on the input corpus, and you feed only the raw documents
 to lucene-lda. In this case, lucene-lda will first execute LDA on the documents
 (using MALLET), and then build the index using the resultant topics and topic memberships.
+(NOTE: this scenario is not yet implemented.)
 
 In either case, you can specify at query time if you want to use the VSM model
 or LDA model for executing a particular query. lucene-lda will then return a
 ranked list of documents that best match the given query.
+
+lucene-lda assumes that any complicated preprocessing of the documents or
+queries has already been performed. See
+[lscp][https://github.com/doofuslarge/lscp] for a nice preprocessor.
+
+
+DESIGN NOTES
+------------
+
+A bit of background.
+
+By default, Lucene uses a slight variant of the vector space model (VSM) to
+compute the similarity between a query and each document in the index. (There
+are some bells and whistles that are available, but this is the general idea.)
+The basic formulation of the similarity comes from the cosine distance between
+two vectors: one for the document, and one for the query. The numbers in the
+vector are the _term weights_ of each term in the document and query.
+
+LDA works very differently. In the LDA model, similarity is computed using
+_conditional probability_, which not only involves the terms of the query and
+document, but also the _topics_ in the query and documents. Basically, we needed
+a way to store which topics are in each document in Lucene. To do so, we use
+Payloads to cleverly encode the topics in each document at index time. Then, at
+query time, we do the following.
+* Determine which topics are in the query, based on the terms in the query
+* Create a Payload query based on these topics
+* Lucene will then find all documents that contain these topics.
+* We ignore the actual relevancy returned by Lucene, and instead use the
+ contents of the Payload to compute the relevancy ourselves, and re-rank the
+ results.
+
+Two notes about similarity:
+
+* In the above process, performance is actually fast for computing conditional
+probability, since we are only computing it for those documents that have some
+of the topics in the query, as opposed to every document in the index.
+
+* We have created an LDAHelper() class that holds necessary values related to
+  LDA, such as the theta and phi matrices returned by LDA. These values are
+  necessary to compute conditional probability, but are impractical to store
+  along with every document in the index. Currently, these values are written to
+  disk during indexing as a separate "LDA index", and then read into memory
+  again at query time. A potential improvement is to add these matrices to the
+  Lucene index somehow, in a space and time efficient manner.
+
 
 
 USAGE
@@ -58,15 +104,26 @@ USAGE
 
 Use on the command line:
 
-    bin/indexDirectory TODO
+    bin/indexDirectory [--help] <inDir> <outIndexDir> <outLDAIndex> [--fileCodes
+    <fileCodes>] [--ldaConfig ldaConfig1,ldaConfig2,...,ldaConfigN ]
 
-    bin/queryAllInDirectory TODO
+    bin/queryWithVSM [--help] <indexDir> <queryDir> <resultsDir>
+    [--weightingCode <weightingCode>] [--scoringCode <scoringCode>] 
+
+    bin/queryWithLDA [--help] <indexDir> <LDAIndexDir> <queryDir> <resultsDir>
+    [--K <K>] [--scoringCode <scoringCode>]
+
+The above scripts simply call the corresponding Java classes, after setting the
+classpath as needed.
 
 
 
 
-INSTALLATION
-------------
+
+BUILD AND INSTALLATION
+----------------------
+
+Simply type:
 
     ant jar
     ant test
@@ -75,7 +132,7 @@ INSTALLATION
 DEPENDENCIES
 ------------
 
-lucene-lda depends on Apache Lucene, MALLET, Apache Commons, and JUnit. All are
+lucene-lda depends on Apache Lucene, MALLET, Apache Commons, Apache log4j, JSAP, and JUnit. All are
 included in the lib/ directory.
 
 
